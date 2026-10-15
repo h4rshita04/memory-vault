@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Cheeku 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rose: #E8637A; --blush: #F9D4DA; --deep: #2B1219; --cream: #FEF6F0;
+    --warm: #F4A6B0; --text: #3D1A22; --muted: #7A4B55; --card-bg: rgba(255,255,255,0.88);
+  }
+  html { scroll-behavior: smooth; }
+  body { 
+    background: #1a0b0e; 
+    color: var(--text); 
+    font-family: 'DM Sans', sans-serif; 
+    min-height: 100vh; 
+    overflow-x: hidden; 
+    position: relative; 
+  }
+  
+  /* Background Image Setup */
+  body::before {
+    content: ''; 
+    position: fixed; 
+    inset: 0;
+    background: url('bg.jpg') center/cover no-repeat;
+    z-index: -3;
+  }
+  body::after {
+    content: ''; 
+    position: fixed; 
+    inset: 0;
+    background: rgba(25, 12, 16, 0.78); 
+    backdrop-filter: blur(12px);
+    z-index: -2;
+  }
+
+  .petal { position: fixed; pointer-events: none; z-index: -1; animation: floatDown linear infinite; opacity: 0; user-select: none; }
+  @keyframes floatDown {
+    0%   { transform: translateY(-60px) rotate(0deg) scale(0.8); opacity: 0; }
+    10%  { opacity: 0.65; }
+    90%  { opacity: 0.45; }
+    100% { transform: translateY(105vh) rotate(360deg) scale(1.1); opacity: 0; }
+  }
+
+  /* LOCK SCREEN */
+  #lock-screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; transition: opacity 0.9s ease, transform 0.9s ease; padding: 20px; }
+  #lock-screen.hide { opacity: 0; transform: scale(0.92) translateY(-30px); pointer-events: none; }
+  .lock-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(24px); border-radius: 32px; padding: 52px 44px 44px; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.4); max-width: 380px; width: 100%; animation: cardFloat 6s ease-in-out infinite; }
+  @keyframes cardFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .lock-icon { font-size: 3.5rem; margin-bottom: 16px; display: block; animation: heartbeat 1.8s ease-in-out infinite; }
+  @keyframes heartbeat { 0%,100% { transform: scale(1); } 30% { transform: scale(1.18); } 60% { transform: scale(1.06); } }
+  .lock-title { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--rose); margin-bottom: 8px; line-height: 1.2; }
+  .lock-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 32px; font-weight: 400; letter-spacing: 0.02em; }
+  .input-wrap { position: relative; margin-bottom: 24px; }
+  .input-wrap input { width: 100%; background: rgba(249,212,218,0.3); border: 1.5px solid rgba(232,99,122,0.4); border-radius: 50px; padding: 14px 24px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--text); text-align: center; outline: none; transition: all 0.3s; letter-spacing: 0.05em; }
+  .input-wrap input::placeholder { color: var(--muted); opacity: 0.6; font-weight: 400; }
+  .input-wrap input:focus { border-color: var(--rose); background: rgba(249,212,218,0.5); box-shadow: 0 0 0 4px rgba(232,99,122,0.15); }
+  .unlock-btn { width: 100%; background: linear-gradient(135deg, #e8637a 0%, #c94b63 100%); color: white; border: none; border-radius: 50px; padding: 15px 32px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 24px rgba(232,99,122,0.35); }
+  .unlock-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,99,122,0.45); }
+  .shake { animation: shake 0.45s ease !important; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+
+  /* VAULT */
+  #vault { display: none; opacity: 0; transition: opacity 0.8s ease; min-height: 100vh; padding: 0 0 80px; }
+  #vault.show { display: block; }
+  #vault.visible { opacity: 1; }
+  
+  .vault-header { text-align: center; padding: 60px 24px 30px; }
+  .header-title { font-family: 'Dancing Script', cursive; font-size: clamp(2.8rem, 8vw, 4.5rem); color: #fff; line-height: 1.1; opacity: 0; animation: fadeUp 0.8s 0.2s ease forwards; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+  .header-title span { color: var(--warm); }
+  .header-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem; color: #fce4ec; margin-top: 12px; opacity: 0; animation: fadeUp 0.8s 0.4s ease forwards; text-shadow: 0 1px 5px rgba(0,0,0,0.5); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+
+  .content-container { max-width: 650px; margin: 0 auto; padding: 0 20px; }
+  .section-heading { text-align: center; font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #fff; margin-bottom: 25px; margin-top: 50px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); opacity: 0; animation: fadeUp 0.8s 0.6s ease forwards;}
+
+  /* Vibe Check Gallery */
+  .vibe-gallery { display: grid; gap: 20px; opacity: 0; animation: fadeUp 0.8s 0.6s ease forwards; margin-bottom: 40px; }
+  .vibe-card { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+  .vibe-img { width: 100%; max-width: 280px; height: 280px; object-fit: cover; border-radius: 16px; margin-bottom: 15px; border: 2px solid rgba(232,99,122,0.3); }
+  .vibe-card h4 { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; color: var(--deep); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;}
+  .vibe-card p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--muted); line-height: 1.45; }
+
+  /* CSV Cards (Memory Vault) */
+  .exhibit { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; border: 1.5px solid rgba(255,255,255,0.3); padding: 30px 25px; margin-bottom: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.2); transition: all 0.4s ease; position: relative; overflow: hidden; opacity: 0; transform: translateY(20px); }
+  .exhibit.visible { opacity: 1; transform: translateY(0); }
+  .exhibit::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--blush), var(--rose), var(--blush)); }
+  .exhibit-label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rose); font-weight: 700; display: block; margin-bottom: 12px; }
+  .quote-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.25rem; line-height: 1.6; color: var(--text); font-weight: 500; }
+  .exhibit-date { margin-top: 15px; font-size: 0.8rem; color: #7A4B55; font-family: 'DM Sans', sans-serif; font-weight: 500; }
+  
+  /* Anchor / Shayari Section */
+  .anchor-section { background: rgba(255, 255, 255, 0.92); border-radius: 24px; padding: 40px 30px; margin-top: 50px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); opacity: 0; animation: fadeUp 0.8s 1s ease forwards; }
+  .poetry { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; line-height: 1.8; color: var(--deep); margin-bottom: 30px; }
+  .poetry p { margin-bottom: 18px; }
+  .poetry strong { color: var(--rose); font-weight: 600; }
+  .sweet-note { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; line-height: 1.7; color: var(--text); border-top: 1px solid var(--blush); padding-top: 25px; font-weight: 500; text-align: left; }
+  .signature-note { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--deep); margin-top: 25px; text-align: center; line-height: 1.6; }
+  .signature-note span { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--rose); display: block; margin-bottom: 12px; }
+
+  /* Loading */
+  .loading-state { text-align: center; padding: 40px 20px; color: #fff; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; }
+  
+  /* Feedback */
+  .feedback { margin: 40px auto 0; opacity: 0; animation: fadeUp 0.8s 1.2s ease forwards; }
+  .feedback-card { background: var(--card-bg); border-radius: 24px; padding: 36px 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .feedback-title { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--rose); margin-bottom: 8px; }
+  .feedback-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--muted); margin-bottom: 22px; }
+  .feedback textarea { width: 100%; background: rgba(255,255,255,0.8); border: 1.5px solid rgba(232,99,122,0.3); border-radius: 16px; padding: 16px; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--text); resize: none; outline: none; transition: all 0.3s; }
+  .feedback textarea:focus { border-color: var(--rose); background: #fff; box-shadow: 0 0 0 4px rgba(232,99,122,0.1); }
+  .send-btn { margin-top: 18px; background: linear-gradient(135deg, #e8637a, #c94b63); color: white; border: none; border-radius: 50px; padding: 14px 40px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(232,99,122,0.3); }
+</style>
+</head>
+<body>
+
+<div id="lock-screen">
+  <div class="lock-card">
+    <span class="lock-icon">🌸</span>
+    <div class="lock-title">Hey, is that you?</div>
+    <p class="lock-sub">Enter your nickname to unlock</p>
+    <div class="input-wrap">
+      <input type="text" id="key-input" placeholder="nickname here..." autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <button class="unlock-btn" onclick="unlock()">Open The Vault ✨</button>
+  </div>
+</div>
+
+<div id="vault">
+  <div class="vault-header">
+    <div class="header-title">Happy Birthday, <span>Cheeku</span> 🌸</div>
+    <div class="header-sub">Welcome to your official memory vault.</div>
+  </div>
+
+  <div class="content-container">
+    
+    <div class="section-heading" style="margin-top: 10px;">Cheeku's Vibe Check</div>
+    <div class="vibe-gallery">
+      <!-- Image 1 -->
+      <div class="vibe-card">
+        <img src="photo1.jpg" alt="Thinking Vibe" class="vibe-img">
+        <h4>The "Deep Thinker"</h4>
+        <p>Haan toh aur kaunsi lagaun picture... tum toh view once mein bhejte ho na... Abhi isi se kaam chalao. Karlo baithkar overthinking, ekdin saath mein karenge baithkar...</p>
+      </div>
+      
+      <!-- Image 2 (Dog Photo) -->
+      <div class="vibe-card">
+        <img src="dog.jpg" alt="Softie Vibe" class="vibe-img">
+        <h4>The Actual Kanishk</h4>
+        <p>This is the picture which I liked the most. Cutee. Dono hi pasand hain mujhe...</p>
+      </div>
+
+      <!-- Image 3 (Gym Photo) -->
+      <div class="vibe-card">
+        <img src="gym.jpg" alt="Prime Vibe" class="vibe-img">
+        <h4>The "Locked-In" Vibe</h4>
+        <p>Okay okay fine Mr. Vegeta ji, discipline and flexing never hurt anybody.</p>
+      </div>
+    </div>
+
+    <div class="section-heading">The Memory Vault</div>
+    <div id="display-area">
+      <div class="loading-state">gathering all the feelings...</div>
+    </div>
+
+    <!-- Heart-Touching Anchor & Shayari -->
+    <div class="anchor-section">
+      <div class="poetry">
+        <p>Dekhne mein lagta hai ekdum serious, 28 saal ka corporate babu,<br>
+        Par sach kahun toh dil se hai mera wahi pyara 'Shaant Cheeku'.<br>
+        Kabhi Bigg Boss ke ghar jaisa pagal dance karne ka khwaab sajata hai,<br>
+        Toh kabhi dar ke maare "Thnku so much harshita" likh kar bhaag jata hai!</p>
+
+        <p>Dil ki entry par isne ek tagda security guard baithaya hai,<br>
+        Jaise hi main thoda paas aayi, isne khud hi distance banaya hai.<br>
+        Dukhi hoga par batayega nahi, silent trauma ka alag hi department chalayega,<br>
+        Aur phir Bermuda triangle ban kar kabhi kabhi duniya se gayab ho jayega.</p>
+
+        <p>Khud hi door bhagega aur phir sochega "meri vibe match karne waala koyi milega",<br>
+        Humesha bolega high threshold waala insaan hun main phir khud hi overthinking karta hua milega.<br>
+        Rishta toh isko chahiye, par terms and conditions mein likha hai 'Please Do Not Disturb',<br>
+        Upar se meri bina filter wali baatein sun kar iske ud jaate hain saare nerves!</p>
+
+        <p>Mujhe pata hai tumhare dil mein khone ka darr bohot gehra hai,<br>
+        Par sun lo, jab tak koi galti na karo, tumpar par mera pehra hai.<br>
+        Tumhari ye jo 'emotional wiring' thodi si dheeli pad gayi hai,<br>
+        Tension mat lo, usko theek karne ki zimmewari ab maine le li hai!</p>
+
+        <p>Par sach kahun toh tumhari is khamoshi mein ek alag hi sukoon hai,<br>
+        Meri har paagalpanti ko jhelne wale, tum listener toh khoob hai!<br>
+        Corporate mask ke peeche chhipa ek behad pyara aur saccha insaan,<br>
+        Mere har chaos ka anchor, aur meri aaj kal ki har khurafaton ki jaan.<br>
+        Happy 29th Birthday Shaant Cheeku, bas hamesha aise hi muskurate rehna,<br>
+        Aur haan... aage se mujhe formal hokar gussa mat dilana.</p>
+      </div>
+
+      <div class="signature-note">
+        <span>— Tum Tum 🤍</span>
+        Happy 29th Kanishk. May your smile, kindness, empathy, and your respect for your family and others never fade away.
+      </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="feedback">
+      <div class="feedback-card">
+        <div class="feedback-title">Wanna say something back?</div>
+        <p class="feedback-sub">Corporate language is strictly prohibited here.</p>
+        <textarea id="resp" rows="4" placeholder="Drop the act and write here..."></textarea>
+        <br>
+        <button class="send-btn" onclick="sendReply()">Send to Tum Tum</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR_Q0EfwJ2Y2FEFxG8cQvjWtG70XxyAeWqiJRux2Oj-ienajjdLoQ1DP6uUMpDRwHnvoB_PO69Re9xJ/pub?output=csv';
+
+  const PETALS = ['🌸','🌷','💗','✨','💖','🫧'];
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.textContent = PETALS[Math.floor(Math.random() * PETALS.length)];
+    el.style.cssText = `left:${Math.random()*100}vw;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;font-size:${0.9+Math.random()*0.7}rem;`;
+    document.body.appendChild(el);
+  }
+
+  document.getElementById('key-input').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+
+  function unlock() {
+    const val = document.getElementById('key-input').value.toLowerCase().trim();
+    if (val === 'cheeku') {
+      const ls = document.getElementById('lock-screen');
+      ls.classList.add('hide');
+      setTimeout(() => {
+        ls.style.display = 'none';
+        const vault = document.getElementById('vault');
+        vault.classList.add('show');
+        setTimeout(() => { vault.classList.add('visible'); fetchData(); logVisit(); }, 60);
+      }, 900);
+    } else {
+      const card = document.querySelector('.lock-card');
+      card.classList.remove('shake');
+      void card.offsetWidth;
+      card.classList.add('shake');
+      document.getElementById('key-input').value = '';
+      document.getElementById('key-input').placeholder = 'Galat naam, try again Ghonchu 🥺';
+    }
+  }
+
+  function CSVToArray(strData, strDelimiter) {
+      strDelimiter = (strDelimiter || ",");
+      var objPattern = new RegExp(
+          ("(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+          "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+          "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
+      var arrData = [[]];
+      var arrMatches = null;
+      while (arrMatches = objPattern.exec(strData)) {
+          var strMatchedDelimiter = arrMatches[1];
+          if (strMatchedDelimiter.length && strMatchedDelimiter !== strDelimiter) {
+              arrData.push([]);
+          }
+          var strMatchedValue;
+          if (arrMatches[2]) {
+              strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"), "\"");
+          } else {
+              strMatchedValue = arrMatches[3];
+          }
+          arrData[arrData.length - 1].push(strMatchedValue);
+      }
+      return arrData;
+  }
+  
+  async function logVisit() {
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbyiZV4jwdQIwZ97SHckx9WailV1ndaROiN5HWJbgdCrN--Fndpignu5gu8U1fa5wjba/exec"; 
+    try {
+        await fetch(scriptUrl + "?message=" + encodeURIComponent("LOG: Kanishk opened the birthday vault!"), {
+            method: 'POST',
+            mode: 'no-cors'
+        });
+    } catch (e) {
+        console.log("Visit recorded");
+    }
+  }
+  
+  async function fetchData() {
+    try {
+      const res = await fetch(csvUrl);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      
+      const rows = CSVToArray(text.trim());
+      if(rows.length > 0) rows.shift();
+      
+      const area = document.getElementById('display-area');
+      area.innerHTML = '';
+      
+      let validCardsCount = 0;
+
+      rows.forEach((cols) => {
+        if (cols.length >= 3) {
+            const date = cols[0] ? cols[0].trim() : '';
+            const title = cols[1] ? cols[1].trim() : '';
+            const textContent = cols[2] ? cols[2].trim() : '';
+            
+            if(!title && !textContent) return; 
+            
+            validCardsCount++;
+
+            const card = document.createElement('div');
+            card.className = 'exhibit';
+            card.innerHTML = `
+              <div class="exhibit-meta">
+                <span class="exhibit-label">Exhibit · ${title}</span>
+              </div>
+              <p class="quote-text">${textContent}</p>
+              <div class="exhibit-date">🌸 ${date}</div>`;
+            area.appendChild(card);
+        }
+      });
+      
+      if (validCardsCount === 0) {
+        area.innerHTML = '<div class="loading-state">Memory vault is empty right now, but waiting to be filled 🌸</div>';
+      } else {
+        const cards = document.querySelectorAll('.exhibit');
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach((entry, idx) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => entry.target.classList.add('visible'), idx * 100);
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        cards.forEach(c => obs.observe(c));
+      }
+
+    } catch(e) {
+      console.error(e);
+      document.getElementById('display-area').innerHTML = '<div class="loading-state">Couldn\'t load right now, try refreshing Ghonchu 🌸</div>';
+    }
+  }
+
+  async function sendReply() {
+    const val = document.getElementById('resp').value.trim();
+    if (!val) { alert('Kuch toh likho pehle 🥺'); return; }
+
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbyiZV4jwdQIwZ97SHckx9WailV1ndaROiN5HWJbgdCrN--Fndpignu5gu8U1fa5wjba/exec"; 
+
+    try {
+        await fetch(scriptUrl + "?message=" + encodeURIComponent(val), {
+            method: 'POST',
+            mode: 'no-cors'
+        });
+        
+        const btn = document.querySelector('.send-btn');
+        btn.textContent = 'Delivered to Tum Tum ✨';
+        btn.style.background = 'linear-gradient(135deg, #c94b63, #a83352)';
+        document.getElementById('resp').value = '';
+        setTimeout(() => { 
+            btn.textContent = 'Send to Tum Tum'; 
+            btn.style.background = ''; 
+        }, 3500);
+    } catch (e) {
+        console.log("Sent!"); 
+    }
+  }
+</script>
+</body>
+</html>
